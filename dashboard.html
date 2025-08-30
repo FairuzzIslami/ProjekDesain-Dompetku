@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DompetKu Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root{
+      --brand: #f4c430;              /* kuning DompetKu */
+      --brand-600: #e0b72b;
+      --sidebar-w: 260px;
+      --sidebar-w-collapsed: 80px;
+      --navbar-h: 64px;
+    }
+    html, body { height: 100%; }
+    body { background:#f5f6f8; overflow-x:hidden; }
+
+    /* ===== Sidebar ===== */
+    .sidebar{
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      width: var(--sidebar-w);
+      background: var(--brand);
+      padding: 0.75rem 0.75rem;
+      padding-top: calc(var(--navbar-h) + .5rem);
+      box-shadow: 2px 0 10px rgba(0,0,0,.06);
+      transition: width .25s ease, transform .25s ease;
+      z-index: 1045;
+      overflow: hidden;
+    }
+    .sidebar-header{
+      position: fixed;
+      top: 0; left: 0;
+      height: var(--navbar-h);
+      width: var(--sidebar-w);
+      display:flex; align-items:center; gap:.6rem;
+      padding: 0 1rem;
+      background: var(--brand);
+      border-right: 1px solid rgba(0,0,0,.05);
+      transition: width .25s ease;
+    }
+    .sidebar-logo{
+      width: 36px; height:36px; border-radius:10px;
+      background:#fff; display:grid; place-items:center; font-weight:800; color:#333;
+    }
+    .sidebar-title{ font-weight:800; color:#000; white-space:nowrap; }
+
+    .sidebar-nav{ height: calc(100% - var(--navbar-h)); overflow-y:auto; padding-right: .25rem; }
+    .sidebar-nav .nav-link{
+      display:flex; align-items:center; gap:12px;
+      padding: .6rem .75rem;
+      color:#1f2a37; border-radius:12px; font-weight:600;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      transition: background .2s ease, color .2s ease;
+    }
+    .sidebar-nav .nav-link .bi{ font-size:1.1rem; min-width: 22px; text-align:center; }
+    .sidebar-nav .nav-link:hover{ background: rgba(255,255,255,.35); }
+    .sidebar-nav .nav-link.active{ background:#fff; color:#111; box-shadow:0 1px 2px rgba(0,0,0,.05); }
+    .sidebar-footer{ position:absolute; left:0; right:0; bottom:.75rem; padding:0 .75rem; }
+
+    /* ===== Navbar ===== */
+    .topbar{
+      position:fixed; top:0; left:var(--sidebar-w);
+      right:0; height: var(--navbar-h);
+      background:#fff; border-bottom: 2px solid var(--brand);
+      display:flex; align-items:center; gap:.75rem;
+      padding: .5rem 1rem;
+      transition: left .25s ease;
+      z-index: 1050;
+    }
+    .btn-hamburger{
+      border:1px solid var(--brand); color:#000; background:#fff;
+    }
+    .btn-hamburger:hover{ background: var(--brand); border-color: var(--brand); }
+
+    /* ===== Content ===== */
+    .page-wrap{ padding-top: calc(var(--navbar-h) + 1rem); }
+    .page-inner{
+      margin-left: var(--sidebar-w);
+      transition: margin-left .25s ease;
+      padding: 1rem;
+    }
+
+    /* ===== Collapsed (desktop) ===== */
+    body.sidebar-collapsed .sidebar{ width: var(--sidebar-w-collapsed); }
+    body.sidebar-collapsed .sidebar-header{ width: var(--sidebar-w-collapsed); }
+    body.sidebar-collapsed .sidebar-title{ opacity:0; pointer-events:none; }
+    body.sidebar-collapsed .sidebar-nav .label{ opacity:0; width:0; }
+    body.sidebar-collapsed .topbar{ left: var(--sidebar-w-collapsed); }
+    body.sidebar-collapsed .page-inner{ margin-left: var(--sidebar-w-collapsed); }
+
+    /* label hide anim */
+    .sidebar-nav .label{ transition: opacity .2s ease, width .2s ease; }
+
+    /* ===== Mobile behaviour ===== */
+    @media (max-width: 991.98px){
+      .topbar{ left: 0; }
+      .page-inner{ margin-left: 0; }
+      .sidebar{ transform: translateX(-100%); }
+      body.sidebar-open .sidebar{ transform: translateX(0); }
+      /* overlay */
+      .backdrop{
+        position: fixed; inset:0; background: rgba(0,0,0,.35);
+        opacity:0; pointer-events:none; transition: opacity .2s ease; z-index:1040;
+      }
+      body.sidebar-open .backdrop{ opacity:1; pointer-events:auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">DK</div>
+      <div class="sidebar-title">DompetKu</div>
+    </div>
+
+    <nav class="sidebar-nav px-2">
+      <a class="nav-link active" href="#" data-bs-toggle="tooltip" data-bs-title="Dashboard">
+        <i class="bi bi-house-door"></i> <span class="label">Dashboard</span>
+      </a>
+      <a class="nav-link" href="#" data-bs-toggle="tooltip" data-bs-title="Analytics">
+        <i class="bi bi-bar-chart-line"></i> <span class="label">Analytics</span>
+      </a>
+      <a class="nav-link" href="#" data-bs-toggle="tooltip" data-bs-title="Transaksi">
+        <i class="bi bi-wallet2"></i> <span class="label">Transaksi</span>
+      </a>
+      <a class="nav-link" href="#" data-bs-toggle="tooltip" data-bs-title="Pengaturan">
+        <i class="bi bi-gear"></i> <span class="label">Pengaturan</span>
+      </a>
+
+      <div class="sidebar-footer mt-2">
+        <a class="nav-link text-danger" href="#" data-bs-toggle="tooltip" data-bs-title="Logout">
+          <i class="bi bi-box-arrow-right"></i> <span class="label">Logout</span>
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Navbar -->
+  <header class="topbar" id="topbar">
+    <button class="btn btn-sm btn-hamburger" id="btnToggle" aria-label="Toggle sidebar">
+      <i class="bi bi-list fs-5"></i>
+    </button>
+    <div class="fw-bold text-warning">DompetKu</div>
+
+    <div class="ms-auto d-flex align-items-center gap-2">
+      <img src="https://i.pravatar.cc/64?img=15" alt="User" class="rounded-circle border" width="36" height="36" style="object-fit:cover">
+      <div class="fw-semibold">Fairuz Aqila</div>
+    </div>
+  </header>
+
+  <!-- Mobile backdrop -->
+  <div class="backdrop" id="backdrop"></div>
+
+  <!-- Content -->
+  <main class="page-wrap">
+    <div class="page-inner">
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body">
+          <h3 class="fw-bold text-warning mb-2">Selamat Datang 👋</h3>
+          <p class="text-muted mb-0">Kelola keuanganmu dengan mudah, cepat, dan aman di DompetKu.</p>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-3">
+          <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body">
+              <div class="text-muted">Total Transaksi</div>
+              <div class="fs-4 fw-bold">120</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body">
+              <div class="text-muted">Pendapatan</div>
+              <div class="fs-4 fw-bold text-success">Rp 10,5 jt</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body">
+              <div class="text-muted">Pengeluaran</div>
+              <div class="fs-4 fw-bold text-danger">Rp 4,3 jt</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body">
+              <div class="text-muted">Saldo</div>
+              <div class="fs-4 fw-bold text-primary">Rp 6,2 jt</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Enable tooltips (useful saat sidebar collapsed)
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(el => new bootstrap.Tooltip(el, { boundary: document.body, placement: 'right' }));
+
+    const btnToggle = document.getElementById('btnToggle');
+    const backdrop  = document.getElementById('backdrop');
+
+    const isDesktop = () => window.matchMedia('(min-width: 992px)').matches;
+
+    function toggleSidebar() {
+      if (isDesktop()) {
+        document.body.classList.toggle('sidebar-collapsed'); // collapse/expand (ikon saja)
+      } else {
+        document.body.classList.toggle('sidebar-open');       // slide in/out (mobile)
+      }
+    }
+
+    btnToggle.addEventListener('click', toggleSidebar);
+    backdrop.addEventListener('click', () => document.body.classList.remove('sidebar-open'));
+
+    // Reset state saat resize biar konsisten
+    window.addEventListener('resize', () => {
+      if (isDesktop()) {
+        document.body.classList.remove('sidebar-open');
+      } else {
+        document.body.classList.remove('sidebar-collapsed');
+      }
+    });
+  </script>
+</body>
+</html>
