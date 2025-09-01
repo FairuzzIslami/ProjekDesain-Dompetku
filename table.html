@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dompetku - Data Keuangan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f9fafb;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #000 !important;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #facc15 !important;
+            font-size: 1.2rem;
+        }
+
+        .navbar-brand i {
+            color: #facc15;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            height: 100vh;
+            background: #111827;
+            color: #fff;
+            padding-top: 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            transition: all 0.3s;
+        }
+
+        .sidebar a {
+            color: #d1d5db;
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 4px 8px;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #facc15;
+            color: #111827;
+        }
+
+        /* Content */
+        .content {
+            margin-left: 240px;
+            padding: 2rem 1rem;
+        }
+
+        /* Card */
+        .card {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Table */
+        table thead th {
+            background: #f4c430 !important;
+            color: #fff !important;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background: #f9fafb;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(250, 204, 21, 0.15);
+        }
+
+        .table td,
+        .table th {
+            vertical-align: middle;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            color: #6b7280;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="fa-solid fa-wallet me-2"></i> Dompetku</a>
+            <button class="btn btn-outline-light d-lg-none" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar collapse d-lg-block" id="sidebarMenu">
+        <a href="#" class="active"><i class="fa-solid fa-table me-2"></i> Data Keuangan</a>
+        <a href="#"><i class="fa-solid fa-plus me-2"></i> Tambah Data</a>
+        <a href="#"><i class="fa-solid fa-chart-line me-2"></i> Laporan</a>
+        <a href="#"><i class="fa-solid fa-gear me-2"></i> Pengaturan</a>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <div class="container-fluid">
+            <!-- Header + Search -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold">Data Keuangan</h3>
+                <div class="d-flex">
+                    <input type="text" class="form-control me-2" placeholder="Cari...">
+                    <button class="btn btn-warning"><i class="fa-solid fa-search"></i></button>
+                </div>
+            </div>
+
+            <!-- Ringkasan -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card shadow-sm text-center p-3">
+                        <h6 class="text-muted">Total Pemasukan</h6>
+                        <h4 class="text-success fw-bold">Rp 5.000.000</h4>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm text-center p-3">
+                        <h6 class="text-muted">Total Pengeluaran</h6>
+                        <h4 class="text-danger fw-bold">Rp 500.000</h4>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm text-center p-3">
+                        <h6 class="text-muted">Saldo Akhir</h6>
+                        <h4 class="text-primary fw-bold">Rp 4.500.000</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Export -->
+            <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-danger me-2" onclick="exportPDF()">
+                    <i class="fa-solid fa-file-pdf"></i> Export PDF
+                </button>
+                <button class="btn btn-success" onclick="exportExcel()">
+                    <i class="fa-solid fa-file-excel"></i> Export Excel
+                </button>
+            </div>
+
+            <!-- Table -->
+            <div class="card shadow-sm p-3">
+                <div class="table-responsive">
+                    <table id="dataKeuangan" class="table table-hover align-middle table-striped">
+                        <thead class="table-warning text-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Tanggal</th>
+                                <th>Keterangan</th>
+                                <th>Kategori</th>
+                                <th>Jumlah</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center">
+                                <td>1</td>
+                                <td>01-09-2025</td>
+                                <td>Gaji Bulanan</td>
+                                <td><span class="badge bg-success">Pemasukan</span></td>
+                                <td class="text-success fw-bold">+ Rp5.000.000</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info"><i class="fa-solid fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-primary"><i class="fa-solid fa-pen"></i></button>
+                                    <button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>2</td>
+                                <td>02-09-2025</td>
+                                <td>Belanja</td>
+                                <td><span class="badge bg-danger">Pengeluaran</span></td>
+                                <td class="text-danger fw-bold">- Rp500.000</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info"><i class="fa-solid fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-primary"><i class="fa-solid fa-pen"></i></button>
+                                    <button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-4 py-3 bg-light border-top">
+        &copy; 2025 <span class="fw-bold text-warning">Dompetku</span>. Semua Hak Dilindungi.
+    </footer>
+    </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
