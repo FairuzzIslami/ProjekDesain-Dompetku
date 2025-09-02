@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Paket Langganan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+</head>
+<style>
+    table thead th {
+        background: #f4c430 !important;
+        color: #fff !important;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        text-align: center;
+    }
+</style>
+<body class="bg-light">
+
+<!-- Content -->
+<div class="content">
+    <div class="container-fluid">
+        <!-- Header + Search -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold">Data Paket Langganan</h3>
+            <div class="d-flex">
+                <input type="text" class="form-control me-2" placeholder="Cari paket...">
+                <button class="btn btn-warning"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+
+        <!-- Ringkasan -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center p-3">
+                    <h6 class="text-muted">Total Paket</h6>
+                    <h4 class="text-primary fw-bold">3</h4>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center p-3">
+                    <h6 class="text-muted">Paket Populer</h6>
+                    <h4 class="text-success fw-bold">Bulanan</h4>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center p-3">
+                    <h6 class="text-muted">Harga Termurah</h6>
+                    <h4 class="text-danger fw-bold">Rp 20.000</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tombol Export -->
+        <div class="d-flex justify-content-end mb-3">
+            <button class="btn btn-danger me-2" onclick="exportPaketPDF()">
+                <i class="fa-solid fa-file-pdf me-1"></i> Export PDF
+            </button>
+            <button class="btn btn-success" onclick="exportPaketExcel()">
+                <i class="fa-solid fa-file-excel me-1"></i> Export Excel
+            </button>
+        </div>
+
+        <!-- Table -->
+        <div class="card shadow-sm p-3">
+            <div class="table-responsive">
+                <table id="dataPaket" class="table table-hover align-middle table-striped">
+                    <thead class="text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Nama Paket</th>
+                            <th>Durasi</th>
+                            <th>Harga</th>
+                            <th>Deskripsi</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center">
+                            <td>1</td>
+                            <td><span class="badge bg-info">Mingguan</span></td>
+                            <td>7 Hari</td>
+                            <td>Rp 20.000</td>
+                            <td>Akses penuh selama 1 minggu</td>
+                            <td>
+                                <button class="btn btn-sm btn-info text-white"><i class="fa-solid fa-eye"></i></button>
+                                <button class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="text-center">
+                            <td>2</td>
+                            <td><span class="badge bg-primary">Bulanan</span></td>
+                            <td>30 Hari</td>
+                            <td>Rp 60.000</td>
+                            <td>Hemat untuk penggunaan rutin bulanan</td>
+                            <td>
+                                <button class="btn btn-sm btn-info text-white"><i class="fa-solid fa-eye"></i></button>
+                                <button class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="text-center">
+                            <td>3</td>
+                            <td><span class="badge bg-danger">Tahunan</span></td>
+                            <td>365 Hari</td>
+                            <td>Rp 500.000</td>
+                            <td>Paling hemat, cocok untuk jangka panjang</td>
+                            <td>
+                                <button class="btn btn-sm btn-info text-white"><i class="fa-solid fa-eye"></i></button>
+                                <button class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
